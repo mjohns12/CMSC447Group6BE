@@ -11,13 +11,13 @@ def index(request):
 
 
 #-----------------Helper functions-----------------
-def get_firstResponder(fr_id):
-    firstResponder_list \
-        = list(FirstResponder.objects.filter(id=fr_id).all().values())
-    firstResponder_list['statuses'] = \
-            list(FirstResponderStatus.objects
-                 .filter(firstResponder_id=responder['id']).all().values())
-    return firstResponders_list
+def get_firstResponders():
+    firstResponder_list = list(FirstResponder.objects.all().values())
+    for responder in firstResponder_list:
+        responder['statuses'] = \
+                list(FirstResponderStatus.objects
+                     .filter(firstResponder_id=responder['id']).all().values())
+    return firstResponder_list
 
 #---------------------------------------------------
 
@@ -72,7 +72,7 @@ def get_mission(request, id):
     return JsonResponse(mission_list, safe=False)
 
 # Add a first responder to the database
-def create_responder(request):
+def create_responder(request, ):
     pass
 
 # Change(Add) a new status for a given first responder

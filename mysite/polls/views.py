@@ -45,7 +45,7 @@ def get_unassigned_equipment(request):
 
 #Get a mission given a mission id
 def get_mission(request, id):
-    mission = Mission.objects.all().filter(id=id).all().values()
+    mission = Mission.objects.all().filter(id=id).values()
     mission_list = list(mission)
 
     #get the events in the mission
@@ -72,43 +72,52 @@ def get_mission(request, id):
     return JsonResponse(mission_list, safe=False)
 
 # Add a first responder to the database
-def create_responder(request, ):
-    pass
+def create_responder(request, fName, lName, bName, phoneNum, emailAddress):
+    new_first_responder = FirstResponder(firstName = fName, lastName = lName,
+                                         branchName = bName, phoneNumber = phoneNum, email = emailAddress)
+    new_first_responder.save()
+    return HttpResponse("First Responder added.")
 
 # Change(Add) a new status for a given first responder
-def update_responder_status(request):
-    pass
+def update_responder_status(request,id, fName, lName, bName, phoneNum, emailAddress):
+    return HttpResponse("First Responder updated.")
 
 #Add a new event to the database
-def create_event(request):
-    pass
+def create_event(request, fName, lName, streetNum, street, city, state, zipCode, phoneNum, timeCalledIn, description, priority):
+    new_event = Mission(fName = fName, lName =lName, streetNum = streetNum, street = street, city = city, state = state, zipCode = zipCode,
+                        phoneNum = phoneNum, timeCalledIn = timeCalledIn, priority = priority)
+    new_event.save()
+
+    return HttpResponse("Event ID:{} created.".format(new_event.id))
 
 #Update the priority of a given event
-def change_event_priority(request):
+def change_event_priority(request, event_id):
     pass
 
 #Change(Add) a new status for a given event
-def update_event_status(request):
+def update_event_status(request, event_id):
     pass
 
 #Add equipment to event
-def add_equipment_to_event(request):
+def add_equipment_to_event(request, equipment_id, event_id):
     pass
 
 
 #Add a new mission to the database
 def create_mission(request):
-    pass
+    new_mission = Mission()
+    new_mission.save()
+    return HttpResponse("Mission ID:{} created.".format(new_mission.id))
 
 #Add an event to a mission
-def add_event_to_mission(request):
+def add_event_to_mission(request, event_id, mission_id):
     pass
 
 #Add a responder to a mission
-def add_responder_to_mission(request):
+def add_responder_to_mission(request, responder_id, mission_id):
     pass
 
 #Add equipment to a mission
-def add_equipment_to_mission(request):
+def add_equipment_to_mission(request, equipment_id, mission_id):
     pass
 

@@ -5,12 +5,16 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
 
-    path('create_responder/<int:id>/', views.create_responder, name='create_responder'), #Change params
-    path('update_responder_status/<int:id>/', views.update_responder_status, name='update_responder_status'), #Change params
+    path('create_responder/<str:fName>/<str:lName>/<str:bName>/<str:phoneNum>, <str:emailAddress>',
+         views.create_responder, name='create_responder'), #Change params
+
+    path('update_responder_status/<int:id>/', views.update_responder_status, name='update_responder_status'),
+#<str:fName>/<str:lName>/<str:bName>/<str:phoneNum>, <str:emailAddress>',
+
     path('get_unassigned_firstResponders/', views.get_unassigned_firstResponders, name='get_unassigned_firstResponders'),
     path('get_assigned_firstResponders/', views.get_assigned_firstResponders, name='get_assigned_firstResponders'),
 
-    path('create_mission/<int:id>/', views.create_mission, name='get_mission'),  # Add params to path
+    path('create_mission/', views.create_mission, name='create_mission'),  # Add params to path
     path('add_event_to_mission/<int:id>', views.add_event_to_mission, name='add_event_to_mission'), #Change params
     path('add_responder_to_mission/<int:id>', views.add_responder_to_mission, name='add_responder_to_mission'), #Change params
     path('add_equipment_to_mission/<int:id>', views.add_equipment_to_mission, name='add_equipment_to_mission'), #Change params

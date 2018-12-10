@@ -23,7 +23,7 @@ class OperationsChief(User):
     pass
 
 class FirstResponder(User):
-    assignedMissionID = models.ManyToManyField('Mission', null=True, blank = True)
+    assignedMissionID = models.ManyToManyField('Mission', blank = True)
     occupation = models.CharField(max_length=100)
 
 class LeadFirstResponder(FirstResponder):
@@ -38,8 +38,8 @@ class FirstResponderStatus(models.Model):
 class Equipment(models.Model):
     equipmentType = models.CharField(max_length=50)
     quantity = models.PositiveIntegerField()
-    events = models.ManyToManyField('Event', null=True, blank=True)
-    missions = models.ManyToManyField('Mission', null=True, blank=True)
+    events = models.ManyToManyField('Event', blank=True)
+    #missions = models.ManyToManyField('Mission', blank=True)
 
 
 class Mission(models.Model):
@@ -55,6 +55,7 @@ class Event(models.Model):
     zipCode = models.PositiveIntegerField(null=True, blank=True)
     phoneNum = models.CharField(max_length=30, null=True, blank=True)
     timeCalledIn = models.DateTimeField(null=True)
+
     description = models.CharField(max_length=30, null=True,blank=True)
     priority = models.PositiveIntegerField(null=True)
     mission = models.ForeignKey(Mission, on_delete=models.CASCADE, null=True, blank=True)
@@ -64,6 +65,11 @@ class EventStatus(models.Model):
     event_id = models.ForeignKey(Event, on_delete=models.CASCADE)
     time = models.DateTimeField()
     status = models.CharField(max_length=200)
+
+class EventTicket(models.Model):
+    event_id = models.ForeignKey(Event, on_delete=models.CASCADE)
+    ticketType = models.CharField(max_length=30, null=True, blank=True)
+    ticketStatus = models.CharField(max_length=30, null=True, blank=True)
 
 
 class Map:

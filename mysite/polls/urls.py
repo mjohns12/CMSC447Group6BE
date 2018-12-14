@@ -1,21 +1,19 @@
 from django.urls import path
-
-
 from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
 
-    path('getFirstResponder/<int:firstResponderId>/', views.getFirstResponder),
+    path('getFirstResponder/<int:id>/', views.getFirstResponder),
     path('getUnassignedFirstResponders/', views.getUnassignedFirstResponders),
     path('getAssignedFirstResponders/<int:mission_id>/', views.getAssignedFirstResponders),
     path('getUnassignedEvents/', views.getUnassignedEvents),
     path('getMission/<int:mission_id>/', views.getMission),
-    path('getAllMissions/<int:mission_id>/', views.getAllMissions),
-    path('createFirstResponderStatus/<str:fName>/<str:lName>/<str:bName>/<str:occupation>/<str:phoneNum>/<str:emailAddress>/', views.createFirstResponderStatus),
-    path('createEvent/<str:fName>/<str:lName>/<str:streetNum>/<str:street>/<str:city>/<str:state>/<str:zipCode>/<str:phoneNum>/<str:timeCalledIn>/<str:description>/<int:priority>/',
-         views.createEvent),
-    path('changeEventPriority/<int:event_id>/<int:newPriority>/', views.changeEventPriority),
+    path('getAllMissions/', views.getAllMissions),
+    path('createFirstResponder/', views.createFirstResponder),
+    path('createFirstResponderStatus/', views.createFirstResponderStatus),
+    path('createEvent/', views.createEvent),
+    path('changeEventPriority/<int:event_id>/', views.changeEventPriority),
     path('createEventTicket/<int:event_id>/<str:ticketType>/<str:ticketStatus>/<str:ticketDescription>/',
          views.createEventTicket),
     path('changeTicketStatus/<int:ticket_id>/<str:newStatus>/', views.changeTicketStatus),

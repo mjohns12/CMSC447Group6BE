@@ -41,11 +41,6 @@ class FirstResponderStatus(models.Model):
 class Equipment(models.Model):
     equipmentType = models.CharField(max_length=50)
 
-
-
-
-
-
 class Event(models.Model):
     fName = models.CharField(max_length=30, null=True, blank=True)
     lName = models.CharField(max_length=30, null=True, blank=True)

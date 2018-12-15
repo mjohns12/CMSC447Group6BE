@@ -30,21 +30,8 @@ class LeadFirstResponder(FirstResponder):
 class Mission(models.Model):
     pass
 
-
-class FirstResponderStatus(models.Model):
-    time = models.DateTimeField()
-    status = models.CharField(max_length=200)
-    firstResponder_id = models.ForeignKey(FirstResponder,
-        on_delete=models.CASCADE)
-    mission_id = models.ForeignKey(Mission, on_delete=models.CASCADE, null=True)
-
 class Equipment(models.Model):
     equipmentType = models.CharField(max_length=50)
-
-
-
-
-
 
 class Event(models.Model):
     fName = models.CharField(max_length=30, null=True, blank=True)
@@ -62,26 +49,33 @@ class Event(models.Model):
     lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 
 class RequiredEquipment(models.Model):
-    equipment_id = models.ForeignKey(Equipment, on_delete=models.CASCADE)
-    event_id = models.ForeignKey(Event, on_delete=models.CASCADE)
+    equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
 
+class FirstResponderStatus(models.Model):
+    time = models.DateTimeField()
+    status = models.CharField(max_length=200)
+    responder = models.ForeignKey(FirstResponder,
+        on_delete=models.CASCADE)
+    mission = models.ForeignKey(Mission, on_delete=models.CASCADE, null=True)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True)
 
 class EventStatus(models.Model):
-    event_id = models.ForeignKey(Event, on_delete=models.CASCADE)
-    mission_id = models.ForeignKey(Mission, on_delete=models.CASCADE, null=True, blank=True)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    mission = models.ForeignKey(Mission, on_delete=models.CASCADE, null=True, blank=True)
     time = models.DateTimeField()
     status = models.CharField(max_length=200)
 
 class EventTicket(models.Model):
-    event_id = models.ForeignKey(Event, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
     statusType = (('Resolved', 'Resolved'),
               ('Unresolved', 'Unresolved'))
     ticketStatus = models.CharField(max_length=30, choices = statusType, null=True, blank=True)
-    t_type = (('Priority', 'Priority'),
-              ('First_Responder','First_Responder'),
-              ('Equipment', 'Equipment'))
 
+    t_type = (('Priority', 'Priority'),
+              ('First Responder','First Responder'),
+              ('Equipment', 'Equipment'))
     ticketType = models.CharField(max_length=30, choices=t_type, null=True, blank=True)
     ticketDescription =  models.CharField(max_length=50, null=True, blank=True)
 

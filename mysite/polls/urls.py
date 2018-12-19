@@ -4,7 +4,6 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
 
-<<<<<<< HEAD
     path('createMission/', views.createMission),
     path('getMission/<int:mission_id>/', views.getMission),
     path('getAllMissions/', views.getAllMissions),
@@ -14,7 +13,6 @@ urlpatterns = [
     path('getUnassignedFirstResponders/', views.getUnassignedFirstResponders),
     path('getAssignedFirstResponders/<int:mission_id>/', views.getAssignedFirstResponders),
     path('createFirstResponderStatus/<int:responder_id>/', views.createFirstResponderStatus),
-=======
     path('getFirstResponder/<int:id>/', views.getFirstResponder),
     path('getUnassignedFirstResponders/', views.getUnassignedFirstResponders),
     path('getAssignedFirstResponders/<int:mission_id>/', views.getAssignedFirstResponders),
@@ -40,7 +38,6 @@ urlpatterns = [
     path('addEquipmentToMission/<int:equipment_id>/<int:mission_id>/<int:amount>/', views.addEquipmentToMission),
     path('removeEquipmentFromMission/<int:equipment_id>/<int:mission_id>/', views.removeEquipmentFromMission),
     path('getAllEquipment/', views.getAllEquipment),
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
 
     path('createEvent/', views.createEvent),
     path('getUnassignedEvents/', views.getUnassignedEvents),

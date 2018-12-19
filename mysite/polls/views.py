@@ -3,7 +3,6 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from .models import *
 from geopy.geocoders import Nominatim
-<<<<<<< HEAD
 from django.db.models import OuterRef, Subquery, Max, F
 from django.forms.models import model_to_dict
 from django.utils import timezone
@@ -29,7 +28,6 @@ def formatEvent(event):
         )
     )
 
-=======
 from django.db.models import Max
 
 def formatEvent(event):
@@ -38,31 +36,24 @@ def formatEvent(event):
             .filter(event_id = event['id'])
             .values('status', 'time')
         )
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
     equipment = list(
         RequiredEquipment.objects
         .filter(event_id = event['id'])
         .values(
-<<<<<<< HEAD
             'equipment__equipmentType',
             'equipment_id',
-=======
             'equipment_id__equipmentType',
             'id',
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
             'quantity'
         )
     )
     for e in equipment:
-<<<<<<< HEAD
         e['equipmentType'] = e['equipment__equipmentType']
         del e['equipment__equipmentType']
         e['id'] = e['equipment_id']
         del e['equipment_id']
-=======
         e['equipmentType'] = e['equipment_id__equipmentType']
         del e['equipment_id__equipmentType']
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
 
     event['equipment'] = equipment
     return event
@@ -70,21 +61,17 @@ def formatEvent(event):
 def formatResponder(responder):
     responder['statuses'] = list(
         FirstResponderStatus.objects
-<<<<<<< HEAD
         .filter(responder = responder['id'])
         .values(
             'mission_id',
             'event_id',
-=======
         .filter(firstResponder_id = responder['id'])
         .values(
             'mission_id_id',
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
             'status',
             'time'
         )
     )
-<<<<<<< HEAD
     return responder
 
 def formatMission(mission):
@@ -102,7 +89,6 @@ def formatMission(mission):
         firstresponderstatus__time = F('status_time')
     ).values())
 
-=======
     for r in responder['statuses']:
         r['mission_id'] = r['mission_id_id']
         del r['mission_id_id']
@@ -119,7 +105,6 @@ def formatMission(mission):
         .values()
         .distinct()
     )
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
     for responder in mission['firstResponders']:
         formatResponder(responder)
 
@@ -128,33 +113,23 @@ def formatMission(mission):
         event = formatEvent(event)
         for e in event['equipment']:
             if e['id'] in totalEquip:
-<<<<<<< HEAD
                 totalEquip[e['id']]['quantity'] += e['quantity']
             else:
                 totalEquip[e['id']] = dict(e)
-=======
                 totalEquip[e['id']].quantity += e['quantity']
             else:
                 totalEquip[e['id']] = e
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
 
     mission['equipment'] = list(totalEquip.values())
 
     return mission
 
-<<<<<<< HEAD
-#--------------------------------------------------
-=======
 #---------------------------------------------------
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
 
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
-<<<<<<< HEAD
 #-----------------Mission Services-----------------
-=======
-#---------------------------------------------------
 
 def getFirstResponder(request, id):
     responder = FirstResponder.objects.filter(pk = id).values()
@@ -201,19 +176,12 @@ def createMission(request):
 
 def getMission(request, mission_id):
     mission = Mission.objects.filter(id=mission_id).values()
-<<<<<<< HEAD
     if len(mission):
-=======
     if mission.count:
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
         mission = formatMission(mission[0])
         return JsonResponse(mission, safe=False)
     else:
         return HttpResponseBadRequest()
-<<<<<<< HEAD
-=======
-
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
 
 #missions with events that aren't finished
 def getAllMissions(request):
@@ -221,7 +189,6 @@ def getAllMissions(request):
     for mission in missions:
         formatMission(mission)
     return JsonResponse(missions, safe=False)
-<<<<<<< HEAD
 
 #-----------------First Responder Services-----------------
 
@@ -245,8 +212,6 @@ def createFirstResponder(request):
     )
     newStatus.save()
     return HttpResponse("First Responder ID: {} created.".format(newFirstResponder.id))
-=======
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
 
 def getFirstResponder(request, id):
     responder = FirstResponder.objects.filter(pk = id).values()
@@ -256,7 +221,6 @@ def getFirstResponder(request, id):
     else:
         return HttpResponseBadRequest("This record doesn't exist")
 
-<<<<<<< HEAD
 #Get all unassigned first responders
 def getUnassignedFirstResponders(request):
     unassignedResponders = list(FirstResponder.objects.annotate(
@@ -268,7 +232,6 @@ def getUnassignedFirstResponders(request):
     
     unassignedResponders = [formatResponder(a) for a in unassignedResponders]
     return JsonResponse(unassignedResponders, safe=False)
-=======
 def createFirstResponder(request):
     values = request.GET.get
     newFirstResponder = FirstResponder(
@@ -281,7 +244,6 @@ def createFirstResponder(request):
     )
     newFirstResponder.save()
     return HttpResponse("First Responder Status ID: {} created.".format(newFirstResponder.id))
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
 
 #Get all assigned first responders
 def getAssignedFirstResponders(request, mission_id):
@@ -295,7 +257,6 @@ def getAssignedFirstResponders(request, mission_id):
     return JsonResponse(assignedResponders, safe=False)
 
 #Creates a first responder status and links it to a first responder
-<<<<<<< HEAD
 def createFirstResponderStatus(request, responder_id):
     values = request.GET.get
     responder = FirstResponder.objects.get(pk = responder_id)
@@ -317,7 +278,6 @@ def createFirstResponderStatus(request, responder_id):
         responder = responder,
         mission = mission,
         event = event
-=======
 def createFirstResponderStatus(request):
     values = request.GET.get
     newStatus = FirstResponderStatus(
@@ -325,12 +285,10 @@ def createFirstResponderStatus(request):
         status = values('status', 'Unassigned'), 
         firstResponder_id = values('responder_id', ''),
         mission_id = values('mission_id', '')
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
     )
     newStatus.save()
     return HttpResponse("First Responder Status ID: {} created.".format(newStatus.id))
 
-<<<<<<< HEAD
 #-----------------Event Services-----------------
 
 # Creates a new event from the information given in a GET request
@@ -351,7 +309,6 @@ def createEvent(request):
     )
     # Geolocate Address to get its latitude and longitude
     addressString = newEvent.streetNum + " " +  newEvent.street + " " + newEvent.city + " " + newEvent.state
-=======
 
 def createEvent(request):
     values = request.GET.get
@@ -370,7 +327,6 @@ def createEvent(request):
     )
 
     addressString = streetNum + " " +  street + " " + city + " " + state
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
     geolocator = Nominatim()
     location = geolocator.geocode(addressString)
     if not location:
@@ -422,7 +378,6 @@ def createEventStatus(request, event_id):
     return HttpResponse("Status changed for event ID: {}.".format(event_id))
 
 def changeEventPriority(request, event_id):
-<<<<<<< HEAD
     event = Event.objects.get(pk = event_id)
     newPriority = request.GET.get('priority', event.priority)
     event.priority = newPriority
@@ -451,24 +406,10 @@ def getUnresolvedTickets(request, event_id):
         ).values()
     )
     return JsonResponse(unresolvedTickets, safe=False)
-=======
     event = Event.objects.get(id = event_id)
     event.priority = request.GET.get('priority', event.priority)
     event.save()
     return HttpResponse("Event ID: {} priority changed to {}.".format(event_id, newPriority))
-
-def createEventTicket(request, event_id):
-    values = request.GET.get
-    # TODO: Put a test in here to make sure that the event exists
-    newTicket = EventTicket(
-        event_id = event_id, 
-        ticketType = values('type', 'Other'),
-        ticketStatus = values('status', ''),
-        ticketDescription = values('description', '')
-    )
-    newTicket.save()
-    return HttpResponse("EventTicket ID: {} created.".format(event_id))
->>>>>>> 73ad57042004267dcb2748cb502ed8869a25db5d
 
 def changeTicketStatus(request, ticket_id):
     ticket = EventTicket.objects.get(id = ticket_id)

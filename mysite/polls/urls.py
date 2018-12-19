@@ -44,7 +44,6 @@ urlpatterns = [
     path('changeEventPriority/<int:event_id>/', views.changeEventPriority),
     path('createEventStatus/<int:event_id>/', views.createEventStatus),
 
-    # TODO: All of these 3
     path('createEventTicket/<int:event_id>/', views.createEventTicket),
     path('getUnresolvedTickets/<int:event_id>/', views.getUnresolvedTickets),
     path('changeTicketStatus/<int:ticket_id>/', views.changeTicketStatus),
